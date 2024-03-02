@@ -1,0 +1,86 @@
+
+■■■ Creeds ■■■
+0:Free Sanctuary
+1:The Iron Ones
+2:Devara's Light                            
+3:The Three
+4:The Stone Roots 
+5:Order of the Betrayer
+6:The House of Splendor
+7:Fool of the Prophet
+8:Keepers of Fire and Sky
+9:Coven of Dust
+
+XX Altar of Bones ???
+
+■■■ Sanctuary Traders ■■■
+0:FREE SLOT
+1:Cleric
+2:Merchant
+3:Blacksmith
+4:Mage
+5:Alchemist
+6:Guide
+7:Leader
+8:Sellsword
+
+■■■ Sanctuaries ■■■
+0:Shivering Shore
+1:Village of Smiles
+2:Bandits Path
+3:Castle of Storms
+4:Sunken Keep
+5:The Hall of Cages
+6:The Watching Woods
+7:Hagers Cavern
+8:Mire of Strench
+9:Dome of the Forgotten
+10:Mal's Floating Castle
+11:Cran's Path
+12:The Far Beach
+13:Fort Beyound the Mire
+14:Siam Lake
+15:Pitchwoods
+16:Ziggurat of Dust
+17:The Ruined Temple
+22:Salt Alkymancery
+26:Crypt of Dead Gods
+31:The Blackest Vault
+
+■■■ Boss Flags ■■■
+32:             The Unspeakable Deep             leviathon
+6:              The Sodden Knight                dread
+19:             The Queen of Smiles              cutqueen
+33:             Kraekan Wyrm                     dragon
+4:              Kraekan Cyclops                  bull
+98:             The False Jester                 fauxjester
+45:             The Tree of Men                  torturetree
+44:             The Mad Alchemist                alchemist
+53:             Disembowled Husk                 pirate
+71:             That Stench Most Foul            gasbag
+87:             The Third Lamb                   griffin
+124:            The Untouched Inquisitor         inquisitor
+189:            Murdiella Mal                    murderfly
+66:             Ronin Cran                       broken
+78:             The Witch of the Lake            lakewitch
+180:            Carsejaw the Cruel               cloak
+102:            The Dried King                   mummy
+95:             The Bloodless Prince             clay
+157/158:        The Coveted                      ruinaxe
+143/144:        The Unskinned / The Architect    monster
+191/192/193:    The Forgotten Kings              deadking
+172:            Kraekan Dragon Skourzh           squiddragon
+174:            The Nameless God                 nameless
+
+■■■ Char Classes ■■■
+0    Knight
+1    Mage
+2    Paladin
+3    Thief
+4    Chef
+5    Cleric
+6    Pauper
+7    Hunter
+
+
+

@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="42">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"MAIN ===&gt;"</Description>
+      <Options moDeactivateChildrenAsWell="1"/>
+      <LastState Activated="1"/>
+      <Color>008000</Color>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+function MemrecAutoDeactivate(pmemrec)
+    local t = createTimer()
+    t.Interval = 100
+    t.OnTimer = function(t)
+        t.Active = false
+        t.Destroy()
+        if pmemrec ~= nil then
+            pmemrec.Active = false
+        end
+    end
+end
+
+openProcess("deadspace2.exe")
+
+if getOpenedProcessID() &lt; 1 then
+    MemrecAutoDeactivate(memrec)
+else
+    memrec.Child[0].Active = true
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1</ID>
+          <Description>"scripts  ▼"</Description>
+          <Options moActivateChildrenAsWell="1" moDeactivateChildrenAsWell="1"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
+          <Color>808080</Color>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>5</ID>
+              <Description>"main - no clip reload"</Description>
+              <LastState Activated="1"/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+/*
+deadspace2.exe+9BAF57 - 89 AE 9C030000        - mov [esi+0000039C],ebp
+deadspace2.exe+9BAF5D - EB 0A                 - jmp deadspace2.exe+9BAF69
+deadspace2.exe+9BAF5F - C7 86 9C030000 00000000 - mov [esi+0000039C],00000000
+*/
+
+unregistersymbol( isNoClipReloadEnable )
+unregistersymbol( ptrNoClipReload )
+
+alloc( noClipReload, 512, deadspace2.exe+9BAF57 )
+
+label( isNoClipReloadEnable )
+registersymbol( isNoClipReloadEnable )
+
+label( ptrNoClipReload )
+registersymbol( ptrNoClipReload )
+
+noClipReload:
+    mov [ptrNoClipReload], esi
+    cmp byte ptr [isNoClipReloadEnable], 01
+    jne @f
+    mov ebp, [esi+000003E4]
+@@:
+    mov [esi+0000039C],ebp
+    jmp deadspace2.exe+9BAF5D
+isNoClipReloadEnable:
+    db 0
+ptrNoClipReload:
+    dd 0
+
+deadspace2.exe+9BAF57:
+    jmp noClipReload
+    nop
+
+[DISABLE]
+
+deadspace2.exe+9BAF57:
+    db 89 AE 9C 03 00 00
+
+dealloc(noClipReload)
+
+unregistersymbol( isNoClipReloadEnable )
+unregistersymbol( ptrNoClipReload )
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>11</ID>
+              <Description>"main - full clip reload"</Description>
+              <LastState Activated="1"/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+/*
+deadspace2.exe+9A7129 - 89 86 9C030000        - mov [esi+0000039C],eax
+deadspace2.exe+9A712F - EB 06                 - jmp deadspace2.exe+9A7137
+deadspace2.exe+9A7131 - 89 8E 9C030000        - mov [esi+0000039C],ecx
+*/
+
+unregistersymbol( isFullClipReloadEnable )
+
+alloc( fullClipReload, 512, deadspace2.exe+9A7129 )
+
+label( isFullClipReloadEnable )
+registersymbol( isFullClipReloadEnable )
+
+fullClipReload:
+    cmp byte ptr [isFullClipReloadEnable], 01
+    jne @f
+    push EAX
+    mov eax, [esi+000003E4]
+    mov [esi+0000039C], eax
+    pop EAX
+    jmp deadspace2.exe+9A712F
+@@:
+    mov [esi+0000039C], eax
+    jmp deadspace2.exe+9A712F
+isFullClipReloadEnable:
+    db 0
+
+deadspace2.exe+9A7129:
+    jmp fullClipReload
+    nop
+
+[DISABLE]
+
+deadspace2.exe+9A7129:
+    db 89 86 9C 03 00 00
+
+dealloc(fullClipReload)
+
+unregistersymbol( isFullClipReloadEnable )
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>18</ID>
+              <Description>"main - ammo inv. min locked"</Description>
+              <LastState Activated="1"/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+/*
+Bullets Access here
+deadspace2.exe+9A8C43 - 89 BE 60020000 - mov [esi+00000260],edi
+deadspace2.exe+9A8C49 - 5F             - pop edi
+deadspace2.exe+9A8C4A - 5E             - pop esi
+deadspace2.exe+9A8C4B - C2 0800        - ret 0008
+
+This code calls from player not shop
+deadspace2.exe+46C01B - E8 F0CB5300    - call deadspace2.exe+9A8C10
+deadspace2.exe+46C020 - 8B 13          - mov edx,[ebx]
+deadspace2.exe+46C022 - 8B 82 54020000 - mov eax,[edx+00000254]
++++
+deadspace2.exe+46BFDB - E8 30CC5300           - call deadspace2.exe+9A8C10
+deadspace2.exe+46BFE0 - 8B 13                 - mov edx,[ebx]
+*/
+
+unregistersymbol( isAmmoInvMinLockEnabled )
+unregistersymbol( ptrAmmoInvMinLock )
+unregistersymbol( isNotFromShop )
+
+alloc( ammoInvMinLock,     512, deadspace2.exe+9A8C43 )
+alloc( isPlayerCheckCode,  512, deadspace2.exe+46C01B )
+alloc( isPlayerCheckCode2, 512, deadspace2.exe+46BFDB )
+
+label( isAmmoInvMinLockEnabled )
+registersymbol( isAmmoInvMinLockEnabled )
+
+label( isNotFromShop )
+registersymbol( isNotFromShop )
+
+label( ptrAmmoInvMinLock )
+registersymbol( ptrAmmoInvMinLock )
+
+ammoInvMinLock:
+    mov [ptrAmmoInvMinLock], esi
+    cmp [isNotFromShop], 01
+    mov [isNotFromShop], 00
+    jne @f
+    cmp byte ptr [isAmmoInvMinLockEnabled], 01
+    jne @f
+    cmp edi, 00000001
+    jae @f
+    mov edi, 01
+@@:
+    mov [esi+00000260], edi
+    jmp deadspace2.exe+9A8C49
+isAmmoInvMinLockEnabled:
+    db 0
+ptrAmmoInvMinLock:
+    dd 0
+
+deadspace2.exe+9A8C43: // Ammo Min Lock
+    jmp ammoInvMinLock
+    nop
+
+isPlayerCheckCode:
+    mov [isNotFromShop], 01
+    call deadspace2.exe+9A8C10
+    jmp deadspace2.exe+46C020
+isNotFromShop:
+    db 0
+
+deadspace2.exe+46C01B: // "Who calls our code" check
+    jmp isPlayerCheckCode
+
+isPlayerCheckCode2:
+    mov [isNotFromShop], 01
+    call deadspace2.exe+9A8C10
+    jmp deadspace2.exe+46BFE0
+
+deadspace2.exe+46BFDB: // "Who calls our code" check 2
+    jmp isPlayerCheckCode2
+
+[DISABLE]
+
+deadspace2.exe+9A8C43:
+    db 89 BE 60 02 00 00
+
+deadspace2.exe+46C01B:
+    db E8 F0 CB 53 00
+
+deadspace2.exe+46BFDB:
+    db E8 30 CC 53 00
+
+dealloc(ammoInvMinLock)
+dealloc(isPlayerCheckCode)
+dealloc(isPlayerCheckCode2)
+
+unregistersymbol( isAmmoInvMinLockEnabled )
+unregistersymbol( ptrAmmoInvMinLock )
+unregistersymbol( isNotFromShop )
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>25</ID>
+              <Description>"main - player inventory"</Description>
+              <LastState Activated="1"/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+/*
+deadspace2.exe+49014A - 8B 88 F80B0000 - mov ecx,[eax+00000BF8]    &lt;&lt;&lt;&lt;&lt;
+deadspace2.exe+490150 - 6A 01          - push 01
+deadspace2.exe+490152 - 8D 54 24 10    - lea edx,[esp+10]
+*/
+
+unregistersymbol( ptrPlayerInventory )
+
+alloc( playerInventory, 512, deadspace2.exe+49014A )
+
+label( ptrPlayerInventory )
+registersymbol( ptrPlayerInventory )
+
+playerInventory:
+    mov [ptrPlayerInventory], eax
+@@:
+    mov ecx, [eax+00000BF8]
+    jmp deadspace2.exe+490150
+ptrPlayerInventory:
+    dd 0
+
+deadspace2.exe+49014A:
+    jmp playerInventory
+    nop
+
+[DISABLE]
+
+deadspace2.exe+49014A:
+    db 8B 88 F8 0B 00 00
+
+dealloc(playerInventory)
+
+unregistersymbol( ptrPlayerInventory )
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>30</ID>
+              <Description>"main - stasis inf."</Description>
+              <LastState Activated="1"/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+/*
+deadspace2.exe+B55D88 - F3 0F10 4C 24 04 - movss xmm1,[esp+04]
+deadspace2.exe+B55D8E - 0F2F C8          - comiss xmm1,xmm0
+*/
+
+unregistersymbol( isStasisInf )
+unregistersymbol( ptrStasisInf )
+
+alloc( stasisInf, 512, deadspace2.exe+B55D88 )
+
+label( isStasisInfEnable )
+registersymbol( isStasisInfEnable )
+
+label( ptrStasisInf )
+registersymbol( ptrStasisInf )
+
+stasisInf:
+    mov [ptrStasisInf], EAX
+    cmp byte ptr [isStasisInfEnable], 01
+    jne @f
+    push EBX
+    mov [eax+000000F0], (float)0.0
+    movss xmm1, [eax+000000F0]
+    mov EBX, [eax+000000F4]
+    mov [eax+000000F0], EBX
+    movss xmm0, [eax+000000F0]
+    pop EBX
+    jmp deadspace2.exe+B55D8E
+@@:
+    movss xmm1,[esp+04]
+    jmp deadspace2.exe+B55D8E
+isStasisInfEnable:
+    db 0
+ptrStasisInf:
+    dd 0
+
+deadspace2.exe+B55D88:
+    jmp stasisInf
+    nop
+
+[DISABLE]
+
+deadspace2.exe+B55D88:
+    db F3 0F 10 4C 24 04
+
+dealloc(stasisInf)
+
+unregistersymbol( isStasisInfEnable )
+unregistersymbol( ptrStasisInf )
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>47</ID>
+              <Description>"main - oxygen inf."</Description>
+              <LastState Activated="1"/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+/*
+deadspace2.exe+496916 - F3 0F11 46 74 - movss [esi+74],xmm0
+deadspace2.exe+49691B - EB 5F         - jmp deadspace2.exe+49697C
+*/
+
+unregistersymbol( isOxygenInfEnable )
+unregistersymbol( ptrOxygenInf )
+
+alloc( oxygenInf, 512, deadspace2.exe+496916 )
+
+label( isOxygenInfEnable )
+registersymbol( isOxygenInfEnable )
+
+label( ptrOxygenInf )
+registersymbol( ptrOxygenInf )
+
+oxygenInf:
+    mov [ptrOxygenInf], ESI
+    cmp byte ptr [isOxygenInfEnable], 01
+    jne @f
+    movss xmm0, [esi+70]
+    //movss [esi+74], xmm0
+@@:
+    movss [esi+74], xmm0
+    jmp deadspace2.exe+49691B
+isOxygenInfEnable:
+    db 0
+ptrOxygenInf:
+    dd 0
+
+deadspace2.exe+496916:
+    jmp oxygenInf
+
+[DISABLE]
+
+deadspace2.exe+496916:
+    db F3 0F 11 46 74
+
+dealloc(oxygenInf)
+
+unregistersymbol( isOxygenInfEnable )
+unregistersymbol( ptrOxygenInf )
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>38</ID>
+              <Description>"main - health inf."</Description>
+              <LastState Activated="1"/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+/*
+READ
+deadspace2.exe+483BC9 - F3 0F10 88 EC000000 - movss xmm1,[eax+000000EC]
+deadspace2.exe+483BD1 - F3 0F5C 4E 0C       - subss xmm1,[esi+0C]
+
+WRITE
+deadspace2.exe+B84D84 - F3 0F11 87 EC000000 - movss [edi+000000EC],xmm0
+deadspace2.exe+B84D8C - EB 08               - jmp deadspace2.exe+B84D96
+*/
+
+unregistersymbol( ptrHealth )
+unregistersymbol( isHealthInfEnable )
+
+alloc( newmemHealthInfRead,  512, deadspace2.exe+483BC9 )
+alloc( newmemHealthInfWrite, 512, deadspace2.exe+B84D84 )
+
+label( ptrHealth )
+registersymbol( ptrHealth )
+
+label( isHealthInfEnable )
+registersymbol( isHealthInfEnable )
+
+newmemHealthInfRead:
+    mov [ptrHealth], EAX
+    movss xmm1, [eax+000000EC]
+    jmp deadspace2.exe+483BD1
+ptrHealth:
+    dd 0
+
+deadspace2.exe+483BC9: // READ
+    jmp newmemHealthInfRead
+    nop
+    nop
+    nop
+
+newmemHealthInfWrite:
+    cmp byte ptr [isHealthInfEnable], 01
+    jne @f
+    cmp [edi+000000F4], (float)0.0
+    je @f
+    mov [edi+000000EC], (float)1.0
+    movss xmm0, [edi+000000EC]
+    push EAX
+    mov EAX, [edi+000000E4]
+    mov [edi+000000E8], EAX
+    pop EAX
+    jmp deadspace2.exe+B84D8C
+@@:
+    movss [edi+000000EC],xmm0
+    jmp deadspace2.exe+B84D8C
+isHealthInfEnable:
+    db 0
+
+deadspace2.exe+B84D84: // WRITE
+    jmp newmemHealthInfWrite
+    nop
+    nop
+    nop
+
+[DISABLE]
+
+deadspace2.exe+483BC9: // READ
+    db F3 0F 10 88 EC 00 00 00
+
+deadspace2.exe+B84D84: // WRITE
+    db F3 0F 11 87 EC 00 00 00
+
+dealloc(newmemHealthInfRead)
+
+unregistersymbol( ptrHealth )
+unregistersymbol( isHealthInfEnable )
+
+</AssemblerScript>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>7</ID>
+          <Description>"No Clip Reload"</Description>
+          <LastState/>
+          <Color>008000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+
+writeBytes( "isNoClipReloadEnable", 01 )
+
+[DISABLE]
+{$lua}
+
+writeBytes( "isNoClipReloadEnable", 00 )
+
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>13</ID>
+          <Description>"Full Clip Reload"</Description>
+          <LastState Activated="1"/>
+          <Color>008000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+
+writeBytes( "isFullClipReloadEnable", 1 )
+
+[DISABLE]
+{$lua}
+
+writeBytes( "isFullClipReloadEnable", 0 )
+
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>20</ID>
+          <Description>"Ammo inv. Min Locked"</Description>
+          <LastState Activated="1"/>
+          <Color>008000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+
+writeBytes( "isAmmoInvMinLockEnabled", 1 )
+
+[DISABLE]
+{$lua}
+
+writeBytes( "isAmmoInvMinLockEnabled", 0 )
+
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>33</ID>
+          <Description>"Stasis Inf."</Description>
+          <LastState Activated="1"/>
+          <Color>008000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+
+writeBytes( "isStasisInfEnable", 1 )
+
+[DISABLE]
+{$lua}
+
+writeBytes( "isStasisInfEnable", 0 )
+
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>52</ID>
+          <Description>"Oxygen Inf."</Description>
+          <LastState Activated="1"/>
+          <Color>008000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+
+writeBytes( "isOxygenInfEnable", 1 )
+
+[DISABLE]
+{$lua}
+
+writeBytes( "isOxygenInfEnable", 0 )
+
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>53</ID>
+          <Description>"Health Inf."</Description>
+          <LastState/>
+          <Color>008000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+
+writeBytes( "isHealthInfEnable", 1 )
+
+[DISABLE]
+{$lua}
+
+writeBytes( "isHealthInfEnable", 0 )
+
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>27</ID>
+          <Description>"Player Inventory  ▼"</Description>
+          <Options moDeactivateChildrenAsWell="1"/>
+          <LastState Value="" RealAddress="00010010"/>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Array of byte</VariableType>
+          <ByteLength>0</ByteLength>
+          <Address>ptrPlayerInventory</Address>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>26</ID>
+              <Description>"Nodes"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>42C</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>45</ID>
+              <Description>"Credits"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>+BF8</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>16</ID>
+          <Description>"Game Speed _ Num 7"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+speedhack_setSpeed(5)
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+
+speedhack_setSpeed(1)
+
+</AssemblerScript>
+          <Hotkeys>
+            <Hotkey>
+              <Action>Toggle Activation</Action>
+              <Keys>
+                <Key>103</Key>
+              </Keys>
+              <ID>0</ID>
+            </Hotkey>
+          </Hotkeys>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>14</ID>
+          <Description>"PAUSE"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+
+pause()
+
+[DISABLE]
+{$lua}
+
+unpause()
+
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>15</ID>
+      <Description>"#========================================================"</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3</ID>
+      <Description>"WIP  ▼"</Description>
+      <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+      <LastState Value="" Activated="1" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>8</ID>
+          <Description>"ptrNoClipReload"</Description>
+          <Options moDeactivateChildrenAsWell="1"/>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>ptrNoClipReload</Address>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>9</ID>
+              <Description>"current +39C"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>+39C</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>10</ID>
+              <Description>"max +3E4"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>+3E4</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>21</ID>
+          <Description>"ptrAmmoInvMinLock"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>ptrAmmoInvMinLock</Address>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>22</ID>
+              <Description>"value +260"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>+260</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>28</ID>
+          <Description>"ptrPlayerInventory"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>ptrPlayerInventory</Address>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>29</ID>
+              <Description>"nodes +42C"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>42C</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>44</ID>
+              <Description>"credits +BF8"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>+BF8</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>35</ID>
+          <Description>"ptrStasisInf"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>ptrStasisInf</Address>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>36</ID>
+              <Description>"curr +F0"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>+F0</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>37</ID>
+              <Description>"curr +F4"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>+F4</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>49</ID>
+          <Description>"ptrOxygenInf"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>ptrOxygenInf</Address>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>50</ID>
+              <Description>"curr +74"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>74</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>51</ID>
+              <Description>"max +70"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>70</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>39</ID>
+          <Description>"ptrHealth"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>ptrHealth</Address>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>40</ID>
+              <Description>"max +E4"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>+E4</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>41</ID>
+              <Description>"curr +E8"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>E8</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>42</ID>
+              <Description>"value +EC"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>+0</Address>
+              <Offsets>
+                <Offset>EC</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>54</ID>
+              <Description>"Restore"</Description>
+              <LastState/>
+              <Color>008000</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+
+local hp_max  = getAddressSafe( "[ptrHealth]+E4" )
+local hp_curr = getAddressSafe( "[ptrHealth]+E8" )
+
+writeFloat( "[ptrHealth]+EC", 1.0 )
+writeFloat( hp_curr, readFloat(hp_max) )
+
+MemrecAutoDeactivate(memrec)
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+              <Hotkeys>
+                <Hotkey>
+                  <Action>Toggle Activation</Action>
+                  <Keys>
+                    <Key>16</Key>
+                    <Key>72</Key>
+                  </Keys>
+                  <ID>0</ID>
+                </Hotkey>
+              </Hotkeys>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>24</ID>
+      <Description>"#========================================================"</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>

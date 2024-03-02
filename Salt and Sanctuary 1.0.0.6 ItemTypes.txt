@@ -1,0 +1,326 @@
+
+■■■ Weapon Flags ■■■
+0     None
+1     Fire
+2     Lit
+3     Poison
+4     Frost
+5     Holy
+6     Arcane
+7     HP Leech
+8     MP Leech
+9     Poise
+10    Charm Move (Hack)
+11    Charm Move2 (Hack)
+
+■■■ Weapon Special ■■■
+0    None
+1    Healing
+2    Chain whip
+3    Extra blunt
+4    Extra blades
+5    Slow Hitter
+6    Fast Hitter
+7    Slide
+8    Charm Move (hack)
+9    Wood Staff
+
+■■■ Shield Type ■■■
+0    Buckler
+1    Heater
+2    Kite
+3    Tower
+4    1h Hack
+
+■■■ Armor Type ■■■
+0    Helm
+1    Chest
+2    Gloves
+3    Boots
+
+■■■ Weapon Type ■■■
+0     Dagger
+1     Sword
+2     Hammer
+3     Axe
+4     Spear
+5     Halberd
+6     Greatsword
+7     Greathammer
+8     Bow
+9     Crossbow
+10    Staff
+11    Whip
+12    Greataxe
+13    Poleaxe
+14    Flintlock
+16    Wand
+17    Greatscissor
+18    Gunblade
+19    Whipsword
+20    Longsword
+
+■■■ Magic Type ■■■
+0    Elemental Spell
+1    Elemental Incantation
+2    Blood Spell
+3    Blood Incantation
+4    Holy Spell
+5    Holy Incantation
+
+■■■ Magic Flags ■■■
+
+0     Bolt
+1     Great Bolt
+2     Missile
+3     Great Missile
+4     Heal
+5     Great Heal
+6     Regenerate
+7     Fireball
+8     Great Fireball
+9     Storm
+10    Great Storm
+11    Buff Weapon
+12    Great Buff Weapon
+13    Buff Shield
+14    Great Buff Shield
+15    Protection
+16    Great Protection
+17    Cure
+18    Great Cure
+19    Ball
+20    Great Ball
+21    Light
+22    Orbiters
+23    Satellite
+24    Ghost Wing
+25    Turret
+26    Poison Buff
+27    Vision Buff
+28    Rapid
+29    Great Rapid
+30    Dragonfire
+31    Flashfire
+32    Holy Orbiters
+33    Bandage
+34    Will Buff
+35    Phys Protect
+36    Mag Protect
+37    Cleanse
+38    Firestar
+39    Poison Gas
+40    Witch Swarm
+41    Witch Laser
+42    Revive
+43    Stars
+44    Starfall
+45    Hover blade
+
+■■■ Ring Type ■■■
+0    Ring
+1    Charm
+2    Rune
+
+■■■ Categories ■■■
+0    Weapon
+1    Shield
+2    Armor
+3    Ring
+4    Consumable
+5    Magic
+6    Key
+7    Material
+
+
+■■■ Ring Flags ■■■
+type 0:
+    0     Phys Defense
+    1     Lit Defense
+    2     Fire Defense
+    3     Poison Defense
+    4     Bladed Def
+    5     Holy Defense
+    6     Dark Defense
+    7     Item Find
+    8     Salt Find
+    9     Gold Find
+    10    HP Regen
+    11    MP Regen
+    12    Stamina Regen
+    13    Poise
+    14    Str
+    15    Dex
+    16    Willpower
+    17    Endurance
+    18    Rolling
+    19    Dmg
+    20    HP to MP
+    21    Magic
+    22    Wisdom
+    23    Heals
+    24    Light
+    25    Fire Dmg
+    26    Cheap Magic
+    27    Cheap Prayers
+    28    Reduce Wounding
+    29    Reduce Fatigue
+    30    Salt Seek
+    31    Melee
+    32    Bloody
+    33    Mag Boost
+    34    Mag Balance
+    35    MP Moat
+    36    HP Leech
+    37    Reflect
+    38    Armor Melee
+    39    Shield - Corruption Fed
+    40    Shield - Thorns
+    41    Armor - Thorns
+
+type 1:
+    0    Atk
+    1    Poise
+    2    Speed
+    3    Reach
+    4    Fire
+    5    Lit
+    6    Poison
+    7    Bladed
+    8    Holy
+    9    Dark
+    10   Cursed
+    11   HP Leech
+    12   MP Leech
+    13   Dying Overkill
+    14   Heavy Poison
+    15   Salt Overload
+    16   Lantern
+    17   Ease
+    18   Blunt
+    19   Shadow
+type 2:
+    0   Upside Down
+    1   Dash
+    2   Wall Jump
+    3   Double Jump
+    4   Red Block
+    5   Blue Ether
+
+■■■ Comsumable Type ■■■
+0    Quick Use
+1    Arrow
+2    Bolt
+3    Flint Shot
+
+■■■ Shield Special ■■■
+0    None
+1    Healing
+2    Stamina Regen
+
+■■■ Upgrade Flag ■■■
+0    Normal
+1    Drowning (Kraekan)
+2    Charred (Red)
+3    None
+4    Frozen (Blue)
+5    Beastly
+
+■■■ Comsumable Flag ■■■
+
+0     Potion
+1     Icon Iron
+2     Icon Cleric
+3     Icon Three
+4     Icon Woods
+5     Icon Dark
+6     Icon Splendor
+7     Icon Fool
+8     Icon Fire
+9     Icon Bones
+10    Arrow
+11    Big Arrow
+12    Fire Arrow
+13    Lit Arrow
+14    Poison Arrow
+15    Frost Arrow
+16    Holy Arrow
+17    Dark Arrow
+18    Bolt
+19    Big Bolt
+20    Fire Bolt
+21    Lit Bolt
+22    Poison Bolt
+23    Frost Bolt
+24    Holy Bolt
+25    Dark Bolt
+26    Potion Stamina
+27    Potion Cure
+28    Potion Thaw
+29    Salt Pouch
+30    Salt Bundle
+31    Salt Bag
+32    Salt Sack
+33    Salt Satchel
+34    Salt Pack
+35    Salt Case
+36    Salt Box
+37    Salt Crate
+38    Salt Chest
+39    Health Roll
+40    Blessed Water
+41    Mana Cloth
+42    Repair Kit
+43    Mana Crystal
+44    Healing Herbs
+45    Mana Herbs
+46    Blood Vial
+47    Black Salt
+48    Mana Mead
+49    Fire Water
+50    Bottled Sky
+51    Msg Bottle
+52    Msg Bottle Green
+53    Buff Fire
+54    Buff Lit
+55    Buff Poison
+56    Buff Frost
+57    Buff Holy
+58    Buff Dark
+59    Firepot
+60    Grenada
+61    Dagger
+62    Poison Dagger
+63    Flame Dagger
+64    Waterpot
+65    Health Shard
+66    Bell
+67    Vision
+68    Torch Consumable
+69    Wood Dagger
+70    Blue Shard
+71    Orange Phial
+72    Red Wine
+73    Blue Wine
+74    Horn Guide
+75    Horn Will
+76    Expunged Heart
+77    Magic Crystal
+78    Magic Urn
+79    Gold Wine
+80    Buff Sanc Fire
+81    Buff Sanc Lit
+82    Buff Sanc Poison
+83    Buff Sanc Frost
+84    Buff Sanc Holy
+85    Buff Sanc Dark
+86    Sanc Horn Will
+87    Egg Wrath
+88    Buff Focus
+89    Blood Pot
+90    Cleansing Cloth
+91    Coop Bell
+92    Antidote
+93    Crystal Sphere
+94    Potato
+95    Rock
